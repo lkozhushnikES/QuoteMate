@@ -1,0 +1,57 @@
+name: CI-CD
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Install root (workspaces)
+        run: npm install
+      - name: Build frontend
+        run: npm run build:frontend
+      - name: Build backend
+        run: npm run build:backend
+      - name: Test frontend
+        run: npm run test:frontend --if-present
+      - name: Test backend
+        run: npm run test:backend --if-present
+
+  deploy-functions:
+    if: github.ref == 'refs/heads/main'
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+      - name: Install backend
+        run: npm run install:backend
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Deploy Functions (publish profile)
+        uses: azure/functions-action@v1
+        with:
+          app-name: ${{ secrets.FUNCTION_APP_NAME }}
+          package: src/backend
+          publish-profile: ${{ secrets.FUNCTION_APP_PUBLISH_PROFILE }}

@@ -1,1 +1,28 @@
-{"name":"fence-quote-app","version":"1.0.0","description":"A progressive web application for tradespeople to capture images and audio on-site, process them with Azure AI services, and generate professional PDF quotes automatically","private":true,"workspaces":["src/frontend","src/backend"],"scripts":{"install:frontend":"cd src/frontend && npm install","install:backend":"cd src/backend && npm install","start:frontend":"cd src/frontend && npm start","start:backend":"cd src/backend && npm start","build:frontend":"cd src/frontend && npm run build","build:backend":"cd src/backend && npm run build","test:frontend":"cd src/frontend && npm test","test:backend":"cd src/backend && npm test","deploy:infra":"az deployment group create --resource-group $(AZURE_RESOURCE_GROUP) --template-file infra/main.bicep --parameters infra/parameters.json"},"repository":{"type":"git","url":"https://github.com/lkozhushnikES/QuoteMate.git"},"keywords":["pwa","azure","react","typescript","fence-quote","ai"],"author":"","license":"MIT","devDependencies":{"npm-run-all":"^4.1.5"}}
+{
+  "name": "quotemate-fence-quote-app",
+  "version": "1.0.0",
+  "description": "QuoteMate Fence Quote application: PWA + Azure Functions + AI services.",
+  "private": true,
+  "workspaces": ["src/frontend", "src/backend"],
+  "scripts": {
+    "install:frontend": "cd src/frontend && npm install",
+    "install:backend": "cd src/backend && npm install",
+    "start:frontend": "cd src/frontend && npm start",
+    "start:backend": "cd src/backend && npm start",
+    "build:frontend": "cd src/frontend && npm run build",
+    "build:backend": "cd src/backend && npm run build",
+    "test:frontend": "cd src/frontend && npm test",
+    "test:backend": "cd src/backend && npm test",
+    "deploy:infra": "az deployment group create --resource-group $AZURE_RESOURCE_GROUP --template-file infra/main.bicep --parameters infra/parameters.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lkozhushnikES/QuoteMate.git"
+  },
+  "keywords": ["pwa", "azure", "react", "typescript", "fence-quote", "ai"],
+  "author": "QuoteMate",
+  "license": "MIT",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
